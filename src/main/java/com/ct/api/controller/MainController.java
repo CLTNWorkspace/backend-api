@@ -1,14 +1,12 @@
-package com.ct.controller;
+package com.ct.api.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/teste")
-public class MainController {
+@RequestMapping("/")
+public interface MainController {
 	@GetMapping
-	public String main() {
-		return "Olá mundo!";
-	}
+	public String main();
 }
