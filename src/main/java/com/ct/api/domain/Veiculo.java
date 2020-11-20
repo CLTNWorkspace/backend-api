@@ -7,52 +7,49 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-@Entity
-@Table(name = "usuario")
 @Data
-public class Usuario {
+@Entity
+@Table(name = "veiculo")
+public class Veiculo {
 
-	@NotNull
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "usuario_id")
+	@NotNull
+	@Column(name = "veiculo_id")
 	private Long id;
 
 	@NotNull
-	@Column(name = "nome_completo")
-	private String nomeCompleto;
+	@Column(name = "apelido")
+	private String apelido;
 
 	@NotNull
-	@Column(name = "email")
-	private String email;
+	@Column(name = "placa")
+	private String placa;
 
-	@NotNull
-	@Column(name = "senha")
-	private String senha;
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	@Column(name = "proprietario")
+	private Usuario dono;
 
-	@Column(name = "cidade")
-	private String cidade;
-
-	@NotNull
-	@Column(name = "telefone")
-	private String telefone;
-
-	@NotNull
-	@Column(name = "usuario_ativo")
-	private boolean ativo;
-
-	@NotNull
-	@Column(name = "cadastro_completa")
-	private boolean cadastroCompleto;
-
-	@Column(name = "url_foto")
+	@Column(name = "url_imagem")
 	private String foto;
 
+	@NotNull
+	@Column(name = "roubado")
+	private boolean roubado;
+
+	@NotNull
+	@Column(name = "encontrado")
+	private boolean encontrado;
+
+	@NotNull
 	@Column(name = "data_criacao")
 	private Date dataCriacao;
 
