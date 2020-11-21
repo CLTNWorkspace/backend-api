@@ -47,7 +47,7 @@ public class Usuario {
 	private boolean ativo;
 
 	@NotNull
-	@Column(name = "cadastro_completa")
+	@Column(name = "cadastro_completo")
 	private boolean cadastroCompleto;
 
 	@Column(name = "url_foto")

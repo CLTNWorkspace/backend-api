@@ -34,8 +34,7 @@ public class Veiculo {
 	private String placa;
 
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	@Column(name = "proprietario")
+	@JoinColumn(name = "proprietario")
 	private Usuario dono;
 
 	@Column(name = "url_imagem")
