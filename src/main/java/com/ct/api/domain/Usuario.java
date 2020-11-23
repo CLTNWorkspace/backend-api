@@ -19,9 +19,9 @@ public class Usuario {
 
 	@NotNull
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "usuario_id")
-	private Long id;
+	private Long usuarioId;
 
 	@NotNull
 	@Column(name = "nome_completo")

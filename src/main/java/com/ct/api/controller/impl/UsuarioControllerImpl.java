@@ -3,6 +3,7 @@ package com.ct.api.controller.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.ct.api.controller.UsuarioController;
@@ -13,7 +14,8 @@ import com.ct.api.services.UsuarioService;
 public class UsuarioControllerImpl implements UsuarioController {
 
 	@Autowired
-	UsuarioService usuarioService;
+	@Lazy
+	private UsuarioService usuarioService;
 
 	@Override
 	public List<Usuario> receberTodos() {

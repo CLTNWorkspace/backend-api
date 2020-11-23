@@ -14,7 +14,7 @@ import com.ct.api.services.UsuarioService;
 public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
-	UsuarioRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository;
 
 	@Override
 	public List<Usuario> listar() {

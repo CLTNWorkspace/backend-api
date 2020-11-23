@@ -23,7 +23,7 @@ public class Veiculo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull
 	@Column(name = "veiculo_id")
-	private Long id;
+	private Long veiculoId;
 
 	@NotNull
 	@Column(name = "apelido")
