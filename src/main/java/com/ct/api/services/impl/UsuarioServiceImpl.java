@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario encontrarPorId(Long id) {
+	public ResponseEntity<UsuarioDTO> encontrarPorId(Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		if (usuario.isPresent()) {
-			return usuario.get();
+			UsuarioDTO usuarioDTO = modelMapper.map(usuario.get(), UsuarioDTO.class);
+			return ResponseEntity.ok(usuarioDTO);
 		}
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 
 	@Override

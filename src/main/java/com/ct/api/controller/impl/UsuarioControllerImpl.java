@@ -28,7 +28,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 	}
 
 	@Override
-	public Usuario receberPorId(@PathVariable("id") Long id) {
+	public ResponseEntity<UsuarioDTO> receberPorId(@PathVariable("id") Long id) {
 		return usuarioService.encontrarPorId(id);
 	}
 
