@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ct.api.domain.Usuario;
+import com.ct.api.dto.EditarUsuarioDTO;
 import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
 import com.ct.api.errors.BusinessException;
@@ -65,5 +66,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuarioRepository.save(novoUsuario);
 
 		return modelMapper.map(usuarioCadastroDTO, UsuarioDTO.class);
+	}
+
+	@Override
+	public UsuarioDTO editarConta(EditarUsuarioDTO editarUsuarioDTO, Long codigoUsuario) {
+
+		Optional<Usuario> usuarioOptional = usuarioRepository.findById(codigoUsuario);
+
+		if (usuarioOptional.isPresent()) {
+			Usuario usuario = usuarioOptional.get();
+			usuario.setNomeCompleto(editarUsuarioDTO.getNome());
+			usuario.setCidade(editarUsuarioDTO.getCidade());
+			usuarioRepository.save(usuario);
+
+			return modelMapper.map(usuario, UsuarioDTO.class);
+		}
+
+		return null;
 	}
 }

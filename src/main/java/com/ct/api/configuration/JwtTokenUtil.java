@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenUtil {
 
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	private static final long JWT_TOKEN_VALIDITY = 3600;
+	static final String TOKEN_PREFIX = "Bearer";
+	static final String HEADER_STRING = "Authorization";
 
 	@Value("${jwt.secret}")
 	private String secret;

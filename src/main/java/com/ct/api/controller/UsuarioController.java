@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ct.api.domain.Usuario;
+import com.ct.api.dto.EditarUsuarioDTO;
 import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
 
@@ -27,4 +29,10 @@ public interface UsuarioController {
 	@PostMapping("/criarNovo")
 	@ResponseStatus(HttpStatus.CREATED)
 	public abstract ResponseEntity<UsuarioDTO> criarNovoUsuario(UsuarioCadastroDTO usuarioCadastroDTO);
+
+	@PutMapping("/editarPerfil/{codigoUsuario}")
+	public abstract ResponseEntity<UsuarioDTO> atualizarUsuario(EditarUsuarioDTO editarUsuarioDTO, Long codigoUsuario);
+
+	@PutMapping
+	public abstract ResponseEntity<UsuarioDTO> mudarFoto();// https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
 }

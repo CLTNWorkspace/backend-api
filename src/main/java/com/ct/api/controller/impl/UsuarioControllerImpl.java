@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ct.api.controller.UsuarioController;
 import com.ct.api.domain.Usuario;
+import com.ct.api.dto.EditarUsuarioDTO;
 import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
 import com.ct.api.services.UsuarioService;
@@ -35,5 +36,17 @@ public class UsuarioControllerImpl implements UsuarioController {
 	@Override
 	public ResponseEntity<UsuarioDTO> criarNovoUsuario(@RequestBody UsuarioCadastroDTO usuarioCadastroDTO) {
 		return ResponseEntity.ok(usuarioService.criarConta(usuarioCadastroDTO));
+	}
+
+	@Override
+	public ResponseEntity<UsuarioDTO> atualizarUsuario(@RequestBody EditarUsuarioDTO editarUsuarioDTO,
+			@PathVariable Long codigoUsuario) {
+		return ResponseEntity.ok(usuarioService.editarConta(editarUsuarioDTO, codigoUsuario));
+	}
+
+	@Override
+	public ResponseEntity<UsuarioDTO> mudarFoto() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
