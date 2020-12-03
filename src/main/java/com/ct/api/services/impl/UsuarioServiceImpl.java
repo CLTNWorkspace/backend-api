@@ -47,12 +47,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public UsuarioDTO criarConta(UsuarioCadastroDTO usuarioCadastroDTO) {
 
-		Optional<Usuario> usuarioExistente = usuarioRepository
-				.findFirstByEmailIgnoreCase(usuarioCadastroDTO.getEmail());
-
-		if (usuarioExistente.isPresent()) {
+		usuarioRepository.findFirstByEmailIgnoreCase(usuarioCadastroDTO.getEmail()).ifPresent(e -> {
 			throw new BusinessException("Esse email já foi cadastrado");
-		}
+		});
+
+		usuarioRepository.findFirstByTelefoneIgnoreCase(usuarioCadastroDTO.getTelefone()).ifPresent(t -> {
+			throw new BusinessException("Esse telefone já foi cadastrado");
+		});
 
 		String senhaDecriptada = usuarioCadastroDTO.getSenha();
 		String senhaEncriptada = passwordEncoder.encode(senhaDecriptada);
@@ -82,6 +83,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 			return modelMapper.map(usuario, UsuarioDTO.class);
 		}
 
+		return null;
+	}
+
+	@Override
+	public UsuarioDTO editarFoto(Long codigoUsuario) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UsuarioDTO editarPlano(Long codigoUsuario) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

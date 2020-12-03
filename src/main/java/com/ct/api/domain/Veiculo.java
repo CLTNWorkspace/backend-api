@@ -61,11 +61,11 @@ public class Veiculo {
 
 	@Column(name = "data_atualizacao")
 	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataAtualizacao;
 
 	@Column(name = "data_exclusao")
 	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataExclusao;
 }

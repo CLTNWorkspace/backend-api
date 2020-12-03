@@ -1,6 +1,6 @@
 package com.ct.api.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
@@ -48,6 +52,9 @@ public class Usuario {
 	@Column(name = "usuario_ativo")
 	private boolean ativo;
 
+	@Column(name = "plano")
+	private Long plano;
+
 	@NotNull
 	@Column(name = "cadastro_completo")
 	private boolean cadastroCompleto;
@@ -55,12 +62,18 @@ public class Usuario {
 	@Column(name = "url_foto")
 	private String foto;
 
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_criacao")
 	private Date dataCriacao;
 
+	@CreationTimestamp
+	@Temporal(TemporalType.DATE)
 	@Column(name = "data_atualizacao")
 	private Date dataAtualizacao;
 
+	@CreationTimestamp
+	@Temporal(TemporalType.DATE)
 	@Column(name = "data_exclusao")
 	private Date dataExclusao;
 }

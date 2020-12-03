@@ -18,4 +18,8 @@ public interface UsuarioService {
 	public abstract UsuarioDTO criarConta(UsuarioCadastroDTO usuarioCadastroDTO);
 
 	public abstract UsuarioDTO editarConta(EditarUsuarioDTO editarUsuarioDTO, Long codigoUsuario);
+
+	public abstract UsuarioDTO editarFoto(Long codigoUsuario);
+
+	public abstract UsuarioDTO editarPlano(Long codigoUsuario);
 }

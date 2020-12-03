@@ -33,6 +33,9 @@ public interface UsuarioController {
 	@PutMapping("/editarPerfil/{codigoUsuario}")
 	public abstract ResponseEntity<UsuarioDTO> atualizarUsuario(EditarUsuarioDTO editarUsuarioDTO, Long codigoUsuario);
 
-	@PutMapping
-	public abstract ResponseEntity<UsuarioDTO> mudarFoto();// https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
+	@PutMapping("/mudarFoto/{codigoUsuario}")
+	public abstract ResponseEntity<UsuarioDTO> mudarFoto(Long codigoUsuario);// https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
+
+	@PutMapping("/mudarPlano/{codigoUsuario}")
+	public abstract ResponseEntity<UsuarioDTO> mudarPlano(Long codigoUsuario);
 }

@@ -45,8 +45,12 @@ public class UsuarioControllerImpl implements UsuarioController {
 	}
 
 	@Override
-	public ResponseEntity<UsuarioDTO> mudarFoto() {
-		// TODO Auto-generated method stub
+	public ResponseEntity<UsuarioDTO> mudarFoto(@PathVariable Long codigoUsuario) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<UsuarioDTO> mudarPlano(@PathVariable Long codigoUsuario) {
 		return null;
 	}
 }
