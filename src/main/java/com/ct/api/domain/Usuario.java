@@ -11,6 +11,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,22 +31,23 @@ public class Usuario {
 	@Column(name = "usuario_id")
 	private Long usuarioId;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "nome_completo")
 	private String nomeCompleto;
 
-	@NotNull
+	@NotBlank
+	@Email
 	@Column(name = "email")
 	private String email;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "senha")
 	private String senha;
 
 	@Column(name = "cidade")
 	private String cidade;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "telefone")
 	private String telefone;
 

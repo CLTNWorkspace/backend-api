@@ -2,6 +2,8 @@ package com.ct.api.controller.impl;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 	}
 
 	@Override
-	public ResponseEntity<UsuarioDTO> criarNovoUsuario(@RequestBody UsuarioCadastroDTO usuarioCadastroDTO) {
+	public ResponseEntity<UsuarioDTO> criarNovoUsuario(@Valid @RequestBody UsuarioCadastroDTO usuarioCadastroDTO) {
 		return ResponseEntity.ok(usuarioService.criarConta(usuarioCadastroDTO));
 	}
 
