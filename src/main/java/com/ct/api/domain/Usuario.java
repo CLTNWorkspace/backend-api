@@ -21,7 +21,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "usuario")
-@SequenceGenerator(name = "USU_SEQ", sequenceName = "USUARIO_SEQ", allocationSize = 1)
+@SequenceGenerator(name = "USU_SEQ", sequenceName = "SEQ_USUARIO", allocationSize = 1)
 @Data
 public class Usuario {
 
