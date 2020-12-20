@@ -10,6 +10,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	public abstract Optional<Usuario> findFirstByEmailIgnoreCase(String email);
 
-	public abstract Optional<Usuario> findFirstByTelefoneIgnoreCase(String telefone);
+	public abstract Optional<Usuario> findFirstByCelularIgnoreCase(String telefone);
 
 }

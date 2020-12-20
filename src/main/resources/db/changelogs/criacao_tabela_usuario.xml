@@ -9,7 +9,7 @@
 
 	<changeSet author="Claiton T." id="criar_usuario">
 		<createTable tableName="usuario">
-			<column name="usuario_id" type="number(18, 0)"
+			<column name="usuario_id" type="numeric(18, 0)"
 				remarks="Identificador do usuário">
 				<constraints primaryKey="true" />
 			</column>
@@ -36,6 +36,10 @@
 				remarks="Número de culular do usuário">
 				<constraints nullable="false" />
 			</column>
+			<column name="plano" type="numeric()2, 0)"
+				defaultValueNumeric="1" remarks="Plano selecionado para o usuário">
+				<constraints nullable="false" />
+			</column>
 			<column name="url_foto" type="VARCHAR(255)"
 				remarks="Url da foto do usuário">
 			</column>
@@ -44,16 +48,15 @@
 				remarks="True se o cadastro do usuário está ativo">
 				<constraints nullable="false" />
 			</column>
-			<column name="data_cadastro" type="TIMESTAMP WITH TIME ZONE"
+			<column name="data_cadastro" type="datetime"
 				defaultValueComputed="CURRENT_TIMESTAMP"
 				remarks="Data de cadastro do usuário">
 				<constraints nullable="false" />
 			</column>
-			<column name="data_atualizacao"
-				type="TIMESTAMP WITH TIME ZONE"
+			<column name="data_atualizacao" type="datetime"
 				remarks="Data de alteração de cadastro">
 			</column>
-			<column name="data_exclusao" type="TIMESTAMP WITH TIME ZONE"
+			<column name="data_exclusao" type="datetime"
 				remarks="Data de exclusão de cadastro">
 			</column>
 		</createTable>
@@ -72,8 +75,10 @@
 			stripComments="false" endDelimiter=";" />
 	</changeSet>
 
-	<changeSet author="Claiton T." id="trigger_data_atualizacao">
-		<sqlFile encoding="utf8" path="../sql/trigger_update.sql"
+	<changeSet author="Claiton T."
+		id="trigger_data_atualizacao_usuario">
+		<sqlFile encoding="utf8"
+			path="../sql/trigger_update_usuario.sql"
 			relativeToChangelogFile="true" splitStatements="false"
 			stripComments="false" endDelimiter=";" />
 	</changeSet>

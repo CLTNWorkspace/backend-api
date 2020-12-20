@@ -13,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -25,15 +24,15 @@ import lombok.Data;
 @Data
 public class Usuario {
 
-	@NotNull
+	@NotBlank
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USU_SEQ")
 	@Column(name = "usuario_id")
 	private Long usuarioId;
 
 	@NotBlank
-	@Column(name = "nome_completo")
-	private String nomeCompleto;
+	@Column(name = "nome_usuario")
+	private String nomeUsuario;
 
 	@NotBlank
 	@Email
@@ -44,23 +43,25 @@ public class Usuario {
 	@Column(name = "senha")
 	private String senha;
 
+	@NotBlank
+	@Column(name = "numero_celular")
+	private String celular;
+
+	@NotBlank
 	@Column(name = "cidade")
 	private String cidade;
 
 	@NotBlank
-	@Column(name = "telefone")
-	private String telefone;
+	@Column(name = "uf")
+	private String uf;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "usuario_ativo")
 	private boolean ativo;
 
+	@NotBlank
 	@Column(name = "plano")
 	private Long plano;
-
-	@NotNull
-	@Column(name = "cadastro_completo")
-	private boolean cadastroCompleto;
 
 	@Column(name = "url_foto")
 	private String foto;
@@ -70,12 +71,10 @@ public class Usuario {
 	@Column(name = "data_criacao")
 	private Date dataCriacao;
 
-	@CreationTimestamp
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_atualizacao")
 	private Date dataAtualizacao;
 
-	@CreationTimestamp
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_exclusao")
 	private Date dataExclusao;

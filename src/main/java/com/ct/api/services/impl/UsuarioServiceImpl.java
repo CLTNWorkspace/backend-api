@@ -51,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new BusinessException("Esse email já foi cadastrado");
 		});
 
-		usuarioRepository.findFirstByTelefoneIgnoreCase(usuarioCadastroDTO.getTelefone()).ifPresent(t -> {
+		usuarioRepository.findFirstByCelularIgnoreCase(usuarioCadastroDTO.getTelefone()).ifPresent(t -> {
 			throw new BusinessException("Esse telefone já foi cadastrado");
 		});
 
@@ -59,10 +59,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		String senhaEncriptada = passwordEncoder.encode(senhaDecriptada);
 		Usuario novoUsuario = new Usuario();
 
-		novoUsuario.setNomeCompleto(usuarioCadastroDTO.getNome());
+		novoUsuario.setNomeUsuario(usuarioCadastroDTO.getNome());
 		novoUsuario.setEmail(usuarioCadastroDTO.getEmail());
 		novoUsuario.setSenha(senhaEncriptada);
-		novoUsuario.setTelefone(usuarioCadastroDTO.getTelefone());
+		novoUsuario.setCelular(usuarioCadastroDTO.getTelefone());
 
 		usuarioRepository.save(novoUsuario);
 
@@ -76,7 +76,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		if (usuarioOptional.isPresent()) {
 			Usuario usuario = usuarioOptional.get();
-			usuario.setNomeCompleto(editarUsuarioDTO.getNome());
+			usuario.setNomeUsuario(editarUsuarioDTO.getNome());
 			usuario.setCidade(editarUsuarioDTO.getCidade());
 			usuarioRepository.save(usuario);
 

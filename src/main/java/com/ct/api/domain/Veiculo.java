@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,7 +22,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@SequenceGenerator(name = "VEI_SEQ", sequenceName = "VEICULO_SEQ", allocationSize = 1)
+@SequenceGenerator(name = "VEI_SEQ", sequenceName = "SEQ_VEICULO", allocationSize = 1)
 @Table(name = "veiculo")
 public class Veiculo {
 
@@ -31,22 +32,23 @@ public class Veiculo {
 	@Column(name = "veiculo_id")
 	private Long veiculoId;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "apelido")
 	private String apelido;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "placa")
 	private String placa;
 
 	@OneToOne
+	@NotBlank
 	@JoinColumn(name = "proprietario")
 	private Usuario dono;
 
 	@Column(name = "url_imagem")
 	private String foto;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "roubado")
 	private boolean roubado;
 
@@ -60,12 +62,10 @@ public class Veiculo {
 	private Date dataCriacao;
 
 	@Column(name = "data_atualizacao")
-	@CreationTimestamp
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAtualizacao;
 
 	@Column(name = "data_exclusao")
-	@CreationTimestamp
 	@Temporal(TemporalType.DATE)
 	private Date dataExclusao;
 }
