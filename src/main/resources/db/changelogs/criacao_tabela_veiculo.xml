@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="Claiton T." id="criar_veiculo">
+		<createTable tableName="veiculo">
+			<column name="veiculo_id" type="numeric(18, 0)"
+				remarks="Identificador do veículo">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="apelido" type="VARCHAR(100)"
+				remarks="Apelido para o veículo">
+				<constraints nullable="false" />
+			</column>
+			<column name="placa" type="VARCHAR(7)"
+				remarks="Placa do veículo">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="proprietario" type="numeric(18, 0)"
+				remarks="Proprietário do veículo">
+				<constraints nullable="false" />
+			</column>
+			<column name="url_foto" type="VARCHAR(255)"
+				remarks="Url de uma foto do veículo">
+			</column>
+			<column name="roubado" type="boolean"
+				defaultValueBoolean="false"
+				remarks="True se o veículo foi marcado como roubado">
+				<constraints nullable="false" />
+			</column>
+			<column name="encontrado" type="boolean"
+				defaultValueBoolean="false"
+				remarks="True se o veículo foi encontrado depois do roubo">
+				<constraints nullable="false" />
+			</column>
+			<column name="data_cadastro" type="datetime"
+				defaultValueComputed="CURRENT_TIMESTAMP"
+				remarks="Data de cadastro do veículo">
+				<constraints nullable="false" />
+			</column>
+			<column name="data_atualizacao" type="datetime"
+				remarks="Data de alteração de cadastro">
+			</column>
+			<column name="data_exclusao" type="datetime"
+				remarks="Data de exclusão de cadastro">
+			</column>
+		</createTable>
+
+		<createSequence sequenceName="seq_veiculo"
+			startValue="1" />
+
+		<rollback>
+			<dropTable tableName="veiculo" />
+		</rollback>
+	</changeSet>
+
+	<changeSet author="Claiton T."
+		id="trigger_data_atualizacao_veiculo">
+		<sqlFile encoding="utf8"
+			path="../sql/trigger_update_veiculo.sql"
+			relativeToChangelogFile="true" splitStatements="false"
+			stripComments="false" endDelimiter=";" />
+	</changeSet>
+
+	<changeSet author="Claiton T." id="add_fk_usuario_veiculo">
+		<addForeignKeyConstraint
+			baseColumnNames="proprietario" baseTableName="veiculo"
+			constraintName="fk_usuario_veiculo" onDelete="CASCADE"
+			onUpdate="RESTRICT" referencedColumnNames="usuario_id"
+			referencedTableName="usuario" />
+	</changeSet>
+</databaseChangeLog>
