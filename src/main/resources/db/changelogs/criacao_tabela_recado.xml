@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="Claiton T." id="criar_recado">
+		<createTable tableName="recado">
+			<column name="recado_id" type="numeric(18, 0)"
+				remarks="Identificador do recado">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="autor" type="numeric(18, 0)"
+				remarks="Autor do recado">
+				<constraints nullable="false" />
+			</column>
+			<column name="veiculo" type="numeric(18, 0)"
+				remarks="Veículo que o recado fala">
+				<constraints nullable="false" />
+			</column>
+			<column name="menssagem" type="VARCHAR(500)"
+				remarks="Conteúdo do recado">
+				<constraints nullable="false" />
+			</column>
+			<column name="url_foto" type="VARCHAR(255)"
+				remarks="Url de uma foto do veículo">
+			</column>
+			<column name="like" type="boolean" defaultValueBoolean="false"
+				remarks="True se o proprietário gostou">
+				<constraints nullable="false" />
+			</column>
+			<column name="dislike" type="boolean"
+				defaultValueBoolean="false"
+				remarks="True se o proprietário não gostou">
+				<constraints nullable="false" />
+			</column>
+			<column name="data_cadastro" type="datetime"
+				defaultValueComputed="CURRENT_TIMESTAMP"
+				remarks="Data de cadastro do recado">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createSequence sequenceName="seq_recado"
+			startValue="1" />
+
+		<rollback>
+			<dropTable tableName="recado" />
+		</rollback>
+	</changeSet>
+
+	<changeSet author="Claiton T." id="add_fk_usuario_recado">
+		<addForeignKeyConstraint
+			baseColumnNames="autor" baseTableName="recado"
+			constraintName="fk_usuario_recado" referencedColumnNames="usuario_id"
+			referencedTableName="usuario" />
+	</changeSet>
+
+	<changeSet author="Claiton T." id="add_fk_veiculo_recado">
+		<addForeignKeyConstraint
+			baseColumnNames="veiculo" baseTableName="recado"
+			constraintName="fk_veiculo_recado" referencedColumnNames="veiculo_id"
+			referencedTableName="veiculo" />
+	</changeSet>
+</databaseChangeLog>
