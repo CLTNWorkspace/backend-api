@@ -51,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new BusinessException("Esse email já foi cadastrado");
 		});
 
-		usuarioRepository.findFirstByCelularIgnoreCase(usuarioCadastroDTO.getTelefone()).ifPresent(t -> {
+		usuarioRepository.findFirstByCelularIgnoreCase(usuarioCadastroDTO.getCelular()).ifPresent(t -> {
 			throw new BusinessException("Esse telefone já foi cadastrado");
 		});
 
@@ -62,11 +62,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		novoUsuario.setNomeUsuario(usuarioCadastroDTO.getNome());
 		novoUsuario.setEmail(usuarioCadastroDTO.getEmail());
 		novoUsuario.setSenha(senhaEncriptada);
-		novoUsuario.setCelular(usuarioCadastroDTO.getTelefone());
+		novoUsuario.setCelular(usuarioCadastroDTO.getCelular());
+		novoUsuario.setCidade(usuarioCadastroDTO.getCidade());
+		novoUsuario.setUf(usuarioCadastroDTO.getUf());
 
 		usuarioRepository.save(novoUsuario);
 
-		return modelMapper.map(usuarioCadastroDTO, UsuarioDTO.class);
+		return modelMapper.map(novoUsuario, UsuarioDTO.class);
 	}
 
 	@Override

@@ -24,7 +24,6 @@ import lombok.Data;
 @Data
 public class Usuario {
 
-	@NotBlank
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USU_SEQ")
 	@Column(name = "usuario_id")
@@ -55,21 +54,19 @@ public class Usuario {
 	@Column(name = "uf")
 	private String uf;
 
-	@NotBlank
 	@Column(name = "usuario_ativo")
 	private boolean ativo;
 
-	@NotBlank
 	@Column(name = "plano")
-	private Long plano;
+	private Long plano = 1L;
 
 	@Column(name = "url_foto")
 	private String foto;
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "data_criacao")
-	private Date dataCriacao;
+	@Column(name = "data_cadastro")
+	private Date dataCadastro;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_atualizacao")

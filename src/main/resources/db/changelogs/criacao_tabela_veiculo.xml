@@ -70,8 +70,7 @@
 	<changeSet author="Claiton T." id="add_fk_usuario_veiculo">
 		<addForeignKeyConstraint
 			baseColumnNames="proprietario" baseTableName="veiculo"
-			constraintName="fk_usuario_veiculo" onDelete="CASCADE"
-			onUpdate="RESTRICT" referencedColumnNames="usuario_id"
-			referencedTableName="usuario" />
+			constraintName="fk_usuario_veiculo"
+			referencedColumnNames="usuario_id" referencedTableName="usuario" />
 	</changeSet>
 </databaseChangeLog>
