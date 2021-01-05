@@ -16,4 +16,5 @@ public class UsuarioDTO implements Serializable {
 	private Long plano;
 	private String uf;
 	private String celular;
+	private String foto;
 }

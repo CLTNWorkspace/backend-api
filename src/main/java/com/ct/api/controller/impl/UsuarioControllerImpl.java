@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ct.api.controller.UsuarioController;
-import com.ct.api.domain.Usuario;
 import com.ct.api.dto.EditarUsuarioDTO;
+import com.ct.api.dto.LoginDTO;
+import com.ct.api.dto.SucessoLoginDTO;
 import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
 import com.ct.api.services.UsuarioService;
@@ -26,7 +27,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 	private UsuarioService usuarioService;
 
 	@Override
-	public List<Usuario> receberTodos() {
+	public List<UsuarioDTO> receberTodos() {
 		return usuarioService.listar();
 	}
 
@@ -54,5 +55,20 @@ public class UsuarioControllerImpl implements UsuarioController {
 	@Override
 	public ResponseEntity<UsuarioDTO> mudarPlano(@PathVariable Long codigoUsuario) {
 		return null;
+	}
+
+	@Override
+	public Long contarEnvios(@PathVariable Long id) {
+		return usuarioService.contarEnvios(id);
+	}
+
+	@Override
+	public Long contarVeiculos(@PathVariable Long id) {
+		return usuarioService.contarVeiculos(id);
+	}
+
+	@Override
+	public ResponseEntity<SucessoLoginDTO> fazerLogin(@RequestBody LoginDTO login) {
+		return ResponseEntity.ok(usuarioService.entrar(login));
 	}
 }

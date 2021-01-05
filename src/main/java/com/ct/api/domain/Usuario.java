@@ -1,5 +1,6 @@
 package com.ct.api.domain;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,6 +16,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.ct.api.enumerador.PlanoEnum;
 
 import lombok.Data;
 
@@ -22,12 +27,12 @@ import lombok.Data;
 @Table(name = "usuario")
 @SequenceGenerator(name = "USU_SEQ", sequenceName = "SEQ_USUARIO", allocationSize = 1)
 @Data
-public class Usuario {
+public class Usuario implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USU_SEQ")
 	@Column(name = "usuario_id")
-	private Long usuarioId;
+	private Long id;
 
 	@NotBlank
 	@Column(name = "nome_usuario")
@@ -55,10 +60,10 @@ public class Usuario {
 	private String uf;
 
 	@Column(name = "usuario_ativo")
-	private boolean ativo;
+	private Boolean ativo = false;
 
 	@Column(name = "plano")
-	private Long plano = 1L;
+	private Long plano = PlanoEnum.Free.getValue();
 
 	@Column(name = "url_foto")
 	private String foto;
@@ -75,4 +80,46 @@ public class Usuario {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_exclusao")
 	private Date dataExclusao;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return senha;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return dataExclusao == null;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return ativo;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return dataExclusao == null;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return ativo;
+	}
 }

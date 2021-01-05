@@ -36,7 +36,7 @@
 				remarks="Número de culular do usuário">
 				<constraints nullable="false" />
 			</column>
-			<column name="plano" type="numeric()2, 0)"
+			<column name="plano" type="numeric(2, 0)"
 				defaultValueNumeric="1" remarks="Plano selecionado para o usuário">
 				<constraints nullable="false" />
 			</column>

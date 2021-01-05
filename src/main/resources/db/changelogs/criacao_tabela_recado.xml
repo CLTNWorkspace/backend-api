@@ -28,11 +28,11 @@
 			<column name="url_foto" type="VARCHAR(255)"
 				remarks="Url de uma foto do veículo">
 			</column>
-			<column name="like" type="boolean" defaultValueBoolean="false"
+			<column name="foi_util" type="boolean" defaultValueBoolean="false"
 				remarks="True se o proprietário gostou">
 				<constraints nullable="false" />
 			</column>
-			<column name="dislike" type="boolean"
+			<column name="nao_util" type="boolean"
 				defaultValueBoolean="false"
 				remarks="True se o proprietário não gostou">
 				<constraints nullable="false" />
@@ -56,13 +56,14 @@
 		<addForeignKeyConstraint
 			baseColumnNames="autor" baseTableName="recado"
 			constraintName="fk_usuario_recado" referencedColumnNames="usuario_id"
+			onDelete="CASCADE"
 			referencedTableName="usuario" />
 	</changeSet>
 
 	<changeSet author="Claiton T." id="add_fk_veiculo_recado">
 		<addForeignKeyConstraint
-			baseColumnNames="veiculo" baseTableName="recado"
-			constraintName="fk_veiculo_recado" referencedColumnNames="veiculo_id"
-			referencedTableName="veiculo" />
+	baseColumnNames="veiculo" baseTableName="recado"
+	constraintName="fk_veiculo_recado" referencedColumnNames="veiculo_id"
+	onDelete="CASCADE" referencedTableName="veiculo" />
 	</changeSet>
 </databaseChangeLog>

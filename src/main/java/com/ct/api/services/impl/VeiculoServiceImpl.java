@@ -1,8 +1,9 @@
 package com.ct.api.services.impl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,31 +24,63 @@ public class VeiculoServiceImpl implements VeiculoService {
 	@Autowired
 	private UsuarioRepository usuariorepository;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	@Override
-	public List<Veiculo> listarVeiculos() {
-		return veiculoRepository.findAll();
+	public List<VeiculoDTO> listarVeiculos(String auth) {
+		return veiculoRepository.findAll().stream().map(veiculo -> modelMapper.map(veiculo, VeiculoDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public VeiculoDTO novoVeiculo(VeiculoDTO veiculoDTO) {
 
-		Optional<Veiculo> veiculoExistente = veiculoRepository.findFirstByPlacaIgnoreCase(veiculoDTO.getPlaca());
-
-		if (veiculoExistente.isPresent()) {
+		veiculoRepository.findFirstByPlacaIgnoreCase(veiculoDTO.getPlaca()).ifPresent(veiculo -> {
 			throw new BusinessException("Essa placa já foi cadastrada");
-		}
+		});
 
-		Usuario dono = usuariorepository.findById(veiculoDTO.getCodigoProprietario())
+		// pegar dados do auth quando implementar
+		Usuario dono = usuariorepository.findById(veiculoDTO.getProprietario())
 				.orElseThrow(() -> new BusinessException("Usuario não encontrado"));
+
+		Long veiculos = usuariorepository.veiculos(dono.getId());
+
+		if (veiculos > 2 && dono.getPlano() == 1) {
+			throw new BusinessException("Para cadastrar mais veículos atualize seu plano");
+		}
 
 		Veiculo novoVeiculo = new Veiculo();
 		novoVeiculo.setApelido(veiculoDTO.getApelido());
 		novoVeiculo.setPlaca(veiculoDTO.getPlaca());
-		novoVeiculo.setDono(dono);
+		novoVeiculo.setProprietario(dono.getId());
 
 		veiculoRepository.save(novoVeiculo);
 
 		return veiculoDTO;
+	}
+
+	@Override
+	public List<VeiculoDTO> listarPorUsuario(Long id) {
+		return veiculoRepository.findByProprietario(id).stream()
+				.map(veiculo -> modelMapper.map(veiculo, VeiculoDTO.class)).collect(Collectors.toList());
+	}
+
+	@Override
+	public VeiculoDTO buscarVeiculoPorPlaca(String placa) {
+		Veiculo veiculo = veiculoRepository.findFirstByPlacaIgnoreCase(placa)
+				.orElseThrow(() -> new BusinessException("Veículo não encontrado"));
+		return modelMapper.map(veiculo, VeiculoDTO.class);
+	}
+
+	@Override
+	public Boolean excluir(Long id) {
+		veiculoRepository.findById(id).ifPresentOrElse(veiculo -> {
+			veiculoRepository.delete(veiculo);
+		}, () -> {
+			throw new BusinessException("Veículo não encontrado");
+		});
+		return true;
 	}
 
 }
