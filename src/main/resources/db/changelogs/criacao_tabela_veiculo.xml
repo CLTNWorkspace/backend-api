@@ -25,6 +25,10 @@
 				remarks="Proprietário do veículo">
 				<constraints nullable="false" />
 			</column>
+			<column name="tipo_veiculo" type="numeric(2, 0)"
+				remarks="Tipo de veículo: 1 = Moto, 2 = Carro 3 = Van 4 = Onibus 5 = caminhão, 6 = Carreta">
+				<constraints nullable="false" />
+			</column>
 			<column name="url_foto" type="VARCHAR(255)"
 				remarks="Url de uma foto do veículo">
 			</column>

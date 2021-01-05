@@ -15,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.ct.api.enumerador.TipoVeiculoEnum;
+
 import lombok.Data;
 
 @Data
@@ -38,6 +40,10 @@ public class Veiculo {
 
 	@Column(name = "proprietario")
 	private Long proprietario;
+
+	@NotBlank
+	@Column(name = "tipo_veiculo")
+	private TipoVeiculoEnum tipoVeiculo;
 
 	@Column(name = "url_foto")
 	private String foto;
