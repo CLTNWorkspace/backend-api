@@ -16,6 +16,8 @@ import com.ct.api.domain.Usuario;
 import com.ct.api.dto.UsuarioAutenticadoDTO;
 import com.google.gson.Gson;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -40,20 +42,35 @@ public class JwtTokenService implements Serializable {
 
 		String subjet = new Gson().toJson(dados);
 
-		return Jwts.builder().setIssuedAt(new Date(System.currentTimeMillis())).setSubject(subjet)
+		Claims claims = Jwts.claims();
+		claims.put("id", usuario.getId());
+		claims.put("email", usuario.getEmail());
+		claims.put("nome", usuario.getNomeUsuario());
+		claims.put("celular", usuario.getCelular());
+
+		return Jwts.builder().setIssuedAt(new Date(System.currentTimeMillis())).setClaims(claims)
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
 
 	}
 
-	public UsuarioAutenticadoDTO pegarDados(String token) {
-		return new Gson().fromJson(Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody().getSubject(),
-				UsuarioAutenticadoDTO.class);
+	public UsuarioAutenticadoDTO obterDadosUsuario(String token) {
+		try {
+			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+			UsuarioAutenticadoDTO usuario = new UsuarioAutenticadoDTO();
+			usuario.setId(Long.parseLong((String) body.get("id")));
+			usuario.setNome((String) body.get("nome"));
+			usuario.setEmail((String) body.get("email"));
+			usuario.setCelular((String) body.get("celular"));
+
+			return usuario;
+		} catch (JwtException | ClassCastException e) {
+			return null;
+		}
 	}
 
 	public String getUsername(String token) {
-
-		UsuarioAutenticadoDTO info = pegarDados(token);
+		UsuarioAutenticadoDTO info = obterDadosUsuario(token);
 		return info.getEmail();
 	}
 
