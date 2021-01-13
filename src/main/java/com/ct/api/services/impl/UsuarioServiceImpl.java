@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ct.api.configuration.JwtTokenService;
 import com.ct.api.domain.Usuario;
 import com.ct.api.dto.EditarUsuarioDTO;
 import com.ct.api.dto.LoginDTO;
@@ -19,6 +18,7 @@ import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
 import com.ct.api.errors.BusinessException;
 import com.ct.api.repository.UsuarioRepository;
+import com.ct.api.security.JwtTokenService;
 import com.ct.api.services.UsuarioService;
 
 @Service

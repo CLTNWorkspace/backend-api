@@ -1,4 +1,4 @@
-package com.ct.api.configuration;
+package com.ct.api.security;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.ct.api.domain.Usuario;
 import com.ct.api.dto.UsuarioAutenticadoDTO;
-import com.google.gson.Gson;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -37,11 +36,6 @@ public class JwtTokenService implements Serializable {
 
 	public String gerarToken(Usuario usuario) {
 
-		UsuarioAutenticadoDTO dados = new UsuarioAutenticadoDTO(usuario.getId(), usuario.getNomeUsuario(),
-				usuario.getEmail(), usuario.getCelular());
-
-		String subjet = new Gson().toJson(dados);
-
 		Claims claims = Jwts.claims();
 		claims.put("id", usuario.getId());
 		claims.put("email", usuario.getEmail());
@@ -49,6 +43,7 @@ public class JwtTokenService implements Serializable {
 		claims.put("celular", usuario.getCelular());
 
 		return Jwts.builder().setIssuedAt(new Date(System.currentTimeMillis())).setClaims(claims)
+				.setSubject(usuario.getId().toString())
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
 

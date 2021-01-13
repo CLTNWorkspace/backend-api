@@ -1,4 +1,4 @@
-package com.ct.api.configuration;
+package com.ct.api.security;
 
 import static com.ct.api.util.Constantes.HEADER_STRING;
 import static com.ct.api.util.Constantes.TOKEN_PREFIX;
