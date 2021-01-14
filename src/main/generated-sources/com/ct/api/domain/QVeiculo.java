@@ -39,6 +39,8 @@ public class QVeiculo extends EntityPathBase<Veiculo> {
 
     public final BooleanPath roubado = createBoolean("roubado");
 
+    public final EnumPath<com.ct.api.enumerador.TipoVeiculoEnum> tipoVeiculo = createEnum("tipoVeiculo", com.ct.api.enumerador.TipoVeiculoEnum.class);
+
     public QVeiculo(String variable) {
         super(Veiculo.class, forVariable(variable));
     }

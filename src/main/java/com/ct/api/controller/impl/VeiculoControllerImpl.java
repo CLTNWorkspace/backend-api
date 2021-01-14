@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.ct.api.controller.VeiculoController;
+import com.ct.api.dto.VeiculoCadastroDTO;
 import com.ct.api.dto.VeiculoDTO;
 import com.ct.api.services.VeiculoService;
 
@@ -25,7 +26,7 @@ public class VeiculoControllerImpl implements VeiculoController {
 	}
 
 	@Override
-	public ResponseEntity<VeiculoDTO> criarNovo(@RequestBody VeiculoDTO veiculoDTO) {
+	public ResponseEntity<VeiculoDTO> criarNovo(@RequestBody VeiculoCadastroDTO veiculoDTO) {
 		return ResponseEntity.ok(veiculoService.novoVeiculo(veiculoDTO));
 	}
 

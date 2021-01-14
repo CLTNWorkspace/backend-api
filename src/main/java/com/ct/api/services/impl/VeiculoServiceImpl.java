@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.ct.api.domain.Usuario;
 import com.ct.api.domain.Veiculo;
+import com.ct.api.dto.VeiculoCadastroDTO;
 import com.ct.api.dto.VeiculoDTO;
+import com.ct.api.enumerador.TipoVeiculoEnum;
 import com.ct.api.errors.BusinessException;
 import com.ct.api.repository.UsuarioRepository;
 import com.ct.api.repository.VeiculoRepository;
@@ -34,7 +36,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 	}
 
 	@Override
-	public VeiculoDTO novoVeiculo(VeiculoDTO veiculoDTO) {
+	public VeiculoDTO novoVeiculo(VeiculoCadastroDTO veiculoDTO) {
 
 		veiculoRepository.findFirstByPlacaIgnoreCase(veiculoDTO.getPlaca()).ifPresent(veiculo -> {
 			throw new BusinessException("Essa placa já foi cadastrada");
@@ -54,10 +56,11 @@ public class VeiculoServiceImpl implements VeiculoService {
 		novoVeiculo.setApelido(veiculoDTO.getApelido());
 		novoVeiculo.setPlaca(veiculoDTO.getPlaca());
 		novoVeiculo.setProprietario(dono.getId());
+		novoVeiculo.setTipoVeiculo(TipoVeiculoEnum.of(veiculoDTO.getTipoVeiculo()));
 
 		veiculoRepository.save(novoVeiculo);
 
-		return veiculoDTO;
+		return modelMapper.map(novoVeiculo, VeiculoDTO.class);
 	}
 
 	@Override

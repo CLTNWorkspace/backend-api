@@ -16,4 +16,8 @@ public class UsuarioAutenticadoDTO {
 	private String email;
 
 	private String celular;
+
+	private String foto;
+
+	private String localidade;
 }

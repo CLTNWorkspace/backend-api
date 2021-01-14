@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ct.api.dto.VeiculoCadastroDTO;
 import com.ct.api.dto.VeiculoDTO;
 
 @RestController
@@ -28,7 +29,7 @@ public interface VeiculoController {
 
 	@PostMapping("/novo")
 	@ResponseStatus(HttpStatus.CREATED)
-	public abstract ResponseEntity<VeiculoDTO> criarNovo(VeiculoDTO veiculoDTO);
+	public abstract ResponseEntity<VeiculoDTO> criarNovo(VeiculoCadastroDTO veiculoDTO);
 
 	@DeleteMapping("/excluir/{id}")
 	public abstract Boolean excluirVeiculo(Long idVeiculo);

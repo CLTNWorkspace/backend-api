@@ -3,8 +3,6 @@ package com.ct.api.security;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,8 +22,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenService implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
-	private static final long JWT_TOKEN_VALIDITY = 3600;
-	static final String TOKEN_PREFIX = "Bearer";
+	private static final long JWT_TOKEN_VALIDITY = 900_000;
+	static final String TOKEN_PREFIX = "Bearer ";
 	static final String HEADER_STRING = "Authorization";
 
 	@Autowired
@@ -35,15 +33,10 @@ public class JwtTokenService implements Serializable {
 	private String secret;
 
 	public String gerarToken(Usuario usuario) {
-
-		Claims claims = Jwts.claims();
-		claims.put("id", usuario.getId());
-		claims.put("email", usuario.getEmail());
-		claims.put("nome", usuario.getNomeUsuario());
-		claims.put("celular", usuario.getCelular());
-
-		return Jwts.builder().setIssuedAt(new Date(System.currentTimeMillis())).setClaims(claims)
-				.setSubject(usuario.getId().toString())
+		return Jwts.builder().setSubject(usuario.getId().toString()).claim("email", usuario.getEmail())
+				.claim("nome", usuario.getNomeUsuario()).claim("celular", usuario.getCelular())
+				.claim("foto", usuario.getFoto()).claim("localidade", usuario.getCidade() + ", " + usuario.getUf())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
 
@@ -51,16 +44,18 @@ public class JwtTokenService implements Serializable {
 
 	public UsuarioAutenticadoDTO obterDadosUsuario(String token) {
 		try {
-			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 			UsuarioAutenticadoDTO usuario = new UsuarioAutenticadoDTO();
-			usuario.setId(Long.parseLong((String) body.get("id")));
+			usuario.setId(Long.parseLong((String) body.getSubject()));
 			usuario.setNome((String) body.get("nome"));
 			usuario.setEmail((String) body.get("email"));
 			usuario.setCelular((String) body.get("celular"));
+			usuario.setFoto((String) body.get("foto"));
+			usuario.setLocalidade((String) body.get("localidade"));
 
 			return usuario;
-		} catch (JwtException | ClassCastException e) {
-			return null;
+		} catch (JwtException e) {
+			throw new IllegalStateException("Erro na autenticação");
 		}
 	}
 
@@ -69,19 +64,13 @@ public class JwtTokenService implements Serializable {
 		return info.getEmail();
 	}
 
-	public UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(HEADER_STRING);
+	public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 
-		if (token != null) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
 
-			UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+		if (userDetails != null) {
 
-			if (userDetails != null) {
-
-				return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-			}
-
-			return null;
+			return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		}
 
 		return null;
