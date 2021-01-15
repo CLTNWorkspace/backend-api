@@ -11,7 +11,7 @@ public interface VeiculoService {
 
 	public abstract List<VeiculoDTO> listarPorUsuario(Long id);
 
-	public abstract VeiculoDTO novoVeiculo(VeiculoCadastroDTO veiculoDTO);
+	public abstract VeiculoDTO novoVeiculo(VeiculoCadastroDTO veiculoDTO, String auth);
 
 	public abstract VeiculoDTO buscarVeiculoPorPlaca(String placa);
 

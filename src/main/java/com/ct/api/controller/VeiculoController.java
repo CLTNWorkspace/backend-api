@@ -29,7 +29,7 @@ public interface VeiculoController {
 
 	@PostMapping("/novo")
 	@ResponseStatus(HttpStatus.CREATED)
-	public abstract ResponseEntity<VeiculoDTO> criarNovo(VeiculoCadastroDTO veiculoDTO);
+	public abstract ResponseEntity<VeiculoDTO> criarNovo(VeiculoCadastroDTO veiculoDTO, String auth);
 
 	@DeleteMapping("/excluir/{id}")
 	public abstract Boolean excluirVeiculo(Long idVeiculo);

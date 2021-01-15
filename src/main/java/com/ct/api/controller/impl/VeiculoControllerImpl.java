@@ -26,8 +26,9 @@ public class VeiculoControllerImpl implements VeiculoController {
 	}
 
 	@Override
-	public ResponseEntity<VeiculoDTO> criarNovo(@RequestBody VeiculoCadastroDTO veiculoDTO) {
-		return ResponseEntity.ok(veiculoService.novoVeiculo(veiculoDTO));
+	public ResponseEntity<VeiculoDTO> criarNovo(@RequestBody VeiculoCadastroDTO veiculoDTO,
+			@RequestHeader("Authorization") String auth) {
+		return ResponseEntity.ok(veiculoService.novoVeiculo(veiculoDTO, auth));
 	}
 
 	@Override

@@ -6,6 +6,5 @@ import lombok.Data;
 public class VeiculoCadastroDTO {
 	private String apelido;
 	private String placa;
-	private Long proprietario;
 	private Long tipoVeiculo;
 }

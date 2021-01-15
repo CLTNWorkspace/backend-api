@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +43,8 @@ public class Veiculo {
 	@Column(name = "proprietario")
 	private Long proprietario;
 
-	@NotBlank
 	@Column(name = "tipo_veiculo")
+	@Enumerated(EnumType.ORDINAL)
 	private TipoVeiculoEnum tipoVeiculo;
 
 	@Column(name = "url_foto")

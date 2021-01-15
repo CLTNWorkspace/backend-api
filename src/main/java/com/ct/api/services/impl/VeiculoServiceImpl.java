@@ -7,14 +7,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ct.api.domain.Usuario;
 import com.ct.api.domain.Veiculo;
+import com.ct.api.dto.UsuarioAutenticadoDTO;
 import com.ct.api.dto.VeiculoCadastroDTO;
 import com.ct.api.dto.VeiculoDTO;
 import com.ct.api.enumerador.TipoVeiculoEnum;
 import com.ct.api.errors.BusinessException;
 import com.ct.api.repository.UsuarioRepository;
 import com.ct.api.repository.VeiculoRepository;
+import com.ct.api.security.JwtTokenService;
 import com.ct.api.services.VeiculoService;
 
 @Service
@@ -29,6 +30,9 @@ public class VeiculoServiceImpl implements VeiculoService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private JwtTokenService tokenService;
+
 	@Override
 	public List<VeiculoDTO> listarVeiculos(String auth) {
 		return veiculoRepository.findAll().stream().map(veiculo -> modelMapper.map(veiculo, VeiculoDTO.class))
@@ -36,27 +40,25 @@ public class VeiculoServiceImpl implements VeiculoService {
 	}
 
 	@Override
-	public VeiculoDTO novoVeiculo(VeiculoCadastroDTO veiculoDTO) {
+	public VeiculoDTO novoVeiculo(VeiculoCadastroDTO veiculoDTO, String auth) {
 
 		veiculoRepository.findFirstByPlacaIgnoreCase(veiculoDTO.getPlaca()).ifPresent(veiculo -> {
 			throw new BusinessException("Essa placa já foi cadastrada");
 		});
 
-		// pegar dados do auth quando implementar
-		Usuario dono = usuariorepository.findById(veiculoDTO.getProprietario())
-				.orElseThrow(() -> new BusinessException("Usuario não encontrado"));
+		UsuarioAutenticadoDTO dadosLogin = tokenService.obterDadosUsuario(auth);
 
-		Long veiculos = usuariorepository.veiculos(dono.getId());
+		Long veiculos = usuariorepository.veiculos(dadosLogin.getId());
 
-		if (veiculos > 2 && dono.getPlano() == 1) {
+		if (veiculos > 2 && dadosLogin.getPlano() == 1) {
 			throw new BusinessException("Para cadastrar mais veículos atualize seu plano");
 		}
 
 		Veiculo novoVeiculo = new Veiculo();
 		novoVeiculo.setApelido(veiculoDTO.getApelido());
 		novoVeiculo.setPlaca(veiculoDTO.getPlaca());
-		novoVeiculo.setProprietario(dono.getId());
-		novoVeiculo.setTipoVeiculo(TipoVeiculoEnum.of(veiculoDTO.getTipoVeiculo()));
+		novoVeiculo.setProprietario(dadosLogin.getId());
+		novoVeiculo.setTipoVeiculo(TipoVeiculoEnum.porValor(veiculoDTO.getTipoVeiculo()));
 
 		veiculoRepository.save(novoVeiculo);
 

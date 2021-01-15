@@ -19,5 +19,7 @@ public class UsuarioAutenticadoDTO {
 
 	private String foto;
 
+	private Long plano;
+
 	private String localidade;
 }

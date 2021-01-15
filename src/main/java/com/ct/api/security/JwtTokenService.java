@@ -35,7 +35,8 @@ public class JwtTokenService implements Serializable {
 	public String gerarToken(Usuario usuario) {
 		return Jwts.builder().setSubject(usuario.getId().toString()).claim("email", usuario.getEmail())
 				.claim("nome", usuario.getNomeUsuario()).claim("celular", usuario.getCelular())
-				.claim("foto", usuario.getFoto()).claim("localidade", usuario.getCidade() + ", " + usuario.getUf())
+				.claim("plano", usuario.getPlano()).claim("foto", usuario.getFoto())
+				.claim("localidade", usuario.getCidade() + ", " + usuario.getUf())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
@@ -44,6 +45,9 @@ public class JwtTokenService implements Serializable {
 
 	public UsuarioAutenticadoDTO obterDadosUsuario(String token) {
 		try {
+			if (token.startsWith(TOKEN_PREFIX)) {
+				token = token.replace(TOKEN_PREFIX, "");
+			}
 			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 			UsuarioAutenticadoDTO usuario = new UsuarioAutenticadoDTO();
 			usuario.setId(Long.parseLong((String) body.getSubject()));
@@ -51,6 +55,7 @@ public class JwtTokenService implements Serializable {
 			usuario.setEmail((String) body.get("email"));
 			usuario.setCelular((String) body.get("celular"));
 			usuario.setFoto((String) body.get("foto"));
+			usuario.setPlano(Long.valueOf(body.get("plano").toString()));
 			usuario.setLocalidade((String) body.get("localidade"));
 
 			return usuario;
