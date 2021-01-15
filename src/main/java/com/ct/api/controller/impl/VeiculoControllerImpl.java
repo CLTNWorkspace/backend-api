@@ -3,6 +3,7 @@ package com.ct.api.controller.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class VeiculoControllerImpl implements VeiculoController {
 	@Override
 	public ResponseEntity<VeiculoDTO> criarNovo(@RequestBody VeiculoCadastroDTO veiculoDTO,
 			@RequestHeader("Authorization") String auth) {
-		return ResponseEntity.ok(veiculoService.novoVeiculo(veiculoDTO, auth));
+		return new ResponseEntity<VeiculoDTO>(veiculoService.novoVeiculo(veiculoDTO, auth), HttpStatus.CREATED);
 	}
 
 	@Override

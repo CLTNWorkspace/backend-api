@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 
 	@Override
 	public ResponseEntity<UsuarioDTO> criarNovoUsuario(@Valid @RequestBody UsuarioCadastroDTO usuarioCadastroDTO) {
-		return ResponseEntity.ok(usuarioService.criarConta(usuarioCadastroDTO));
+		return new ResponseEntity<UsuarioDTO>(usuarioService.criarConta(usuarioCadastroDTO), HttpStatus.CREATED);
 	}
 
 	@Override
