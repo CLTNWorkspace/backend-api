@@ -1,5 +1,8 @@
 package com.ct.api.security;
 
+import static com.ct.api.util.Constantes.EXPIRATION_TIME;
+import static com.ct.api.util.Constantes.TOKEN_PREFIX;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,9 +15,10 @@ import org.springframework.stereotype.Component;
 
 import com.ct.api.domain.Usuario;
 import com.ct.api.dto.UsuarioAutenticadoDTO;
+import com.ct.api.errors.BusinessException;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -22,9 +26,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenService implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
-	private static final long JWT_TOKEN_VALIDITY = 900_000;
-	static final String TOKEN_PREFIX = "Bearer ";
-	static final String HEADER_STRING = "Authorization";
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -38,7 +39,7 @@ public class JwtTokenService implements Serializable {
 				.claim("plano", usuario.getPlano()).claim("foto", usuario.getFoto())
 				.claim("localidade", usuario.getCidade() + ", " + usuario.getUf())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
 
 	}
@@ -59,8 +60,8 @@ public class JwtTokenService implements Serializable {
 			usuario.setLocalidade((String) body.get("localidade"));
 
 			return usuario;
-		} catch (JwtException e) {
-			throw new IllegalStateException("Erro na autenticação");
+		} catch (ExpiredJwtException e) {
+			throw new BusinessException("Erro na autenticação");
 		}
 	}
 
