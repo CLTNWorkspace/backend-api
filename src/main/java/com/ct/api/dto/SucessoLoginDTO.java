@@ -7,5 +7,5 @@ public class SucessoLoginDTO {
 
 	private String token;
 
-	private String refreshToken;
+	private String refreshToken = "refresh";
 }
