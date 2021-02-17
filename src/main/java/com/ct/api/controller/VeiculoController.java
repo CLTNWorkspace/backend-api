@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ct.api.dto.VeiculoCadastroDTO;
 import com.ct.api.dto.VeiculoDTO;
@@ -30,4 +32,10 @@ public interface VeiculoController {
 
 	@DeleteMapping("/excluir/{id}")
 	public abstract Boolean excluirVeiculo(Long idVeiculo);
+
+	@PostMapping("/{veiculo}/avatar")
+	public abstract String mudarFotoUsuario(Long veiculoId, MultipartFile foto);
+
+	@PutMapping("/editar")
+	public abstract ResponseEntity<Boolean> editar(String authorization, VeiculoDTO veiculoDTO);
 }

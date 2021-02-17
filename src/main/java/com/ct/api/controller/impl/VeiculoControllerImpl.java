@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ct.api.controller.VeiculoController;
 import com.ct.api.dto.VeiculoCadastroDTO;
@@ -45,6 +46,17 @@ public class VeiculoControllerImpl implements VeiculoController {
 	@Override
 	public Boolean excluirVeiculo(@PathVariable("id") Long idVeiculo) {
 		return veiculoService.excluir(idVeiculo);
+	}
+
+	@Override
+	public String mudarFotoUsuario(@PathVariable("veiculo") Long veiculoId, MultipartFile foto) {
+		return veiculoService.mudarFoto(veiculoId, foto);
+	}
+
+	@Override
+	public ResponseEntity<Boolean> editar(@RequestHeader("Authorization") String authorization,
+			@RequestBody VeiculoDTO veiculoDTO) {
+		return ResponseEntity.ok(veiculoService.editar(authorization, veiculoDTO));
 	}
 
 }

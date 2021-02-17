@@ -14,4 +14,6 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
 	public abstract Optional<Veiculo> findFirstByPlacaIgnoreCase(String placa);
 
 	public abstract List<Veiculo> findByProprietario(Long id);
+
+	public abstract Optional<Veiculo> findFirstByIdAndProprietario(Long id, Long usuario);
 }
