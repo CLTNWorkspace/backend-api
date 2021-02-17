@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ct.api.controller.UsuarioController;
 import com.ct.api.dto.EditarUsuarioDTO;
@@ -18,6 +21,7 @@ import com.ct.api.dto.LoginDTO;
 import com.ct.api.dto.SucessoLoginDTO;
 import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
+import com.ct.api.dto.UsuarioSenhaDTO;
 import com.ct.api.services.UsuarioService;
 
 @Controller
@@ -71,5 +75,17 @@ public class UsuarioControllerImpl implements UsuarioController {
 	@Override
 	public ResponseEntity<SucessoLoginDTO> fazerLogin(@RequestBody LoginDTO login) {
 		return ResponseEntity.ok(usuarioService.entrar(login));
+	}
+
+	@Override
+	public Boolean mudarSenhaUsuario(@RequestBody UsuarioSenhaDTO usuarioSenhaDTO) {
+		return usuarioService.alterarSenha(usuarioSenhaDTO);
+	}
+
+	@Override
+	public String mudarFotoUsuario(@RequestHeader("Authorization") String authorization,
+			@RequestPart(required = true, value = "foto") MultipartFile multipartFile) {
+
+		return usuarioService.alterarFoto(authorization, multipartFile);
 	}
 }

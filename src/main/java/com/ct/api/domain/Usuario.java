@@ -29,6 +29,11 @@ import lombok.Data;
 @Data
 public class Usuario implements UserDetails {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USU_SEQ")
 	@Column(name = "usuario_id")

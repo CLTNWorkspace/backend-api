@@ -9,17 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ct.api.domain.Usuario;
 import com.ct.api.dto.EditarUsuarioDTO;
 import com.ct.api.dto.LoginDTO;
 import com.ct.api.dto.SucessoLoginDTO;
+import com.ct.api.dto.UsuarioAutenticadoDTO;
 import com.ct.api.dto.UsuarioCadastroDTO;
 import com.ct.api.dto.UsuarioDTO;
+import com.ct.api.dto.UsuarioSenhaDTO;
 import com.ct.api.errors.BusinessException;
 import com.ct.api.repository.UsuarioRepository;
 import com.ct.api.security.JwtTokenService;
+import com.ct.api.services.AmazonS3Service;
 import com.ct.api.services.UsuarioService;
+import com.ct.api.util.StringUtil;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -35,6 +41,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private JwtTokenService tokenService;
+
+	@Autowired
+	private AmazonS3Service amazonS3Service;
 
 	@Override
 	public List<UsuarioDTO> listar() {
@@ -130,5 +139,59 @@ public class UsuarioServiceImpl implements UsuarioService {
 		sucesso.setToken(tokenService.gerarToken(usuarioLogin));
 
 		return sucesso;
+	}
+
+	@Override
+	public Boolean alterarSenha(UsuarioSenhaDTO usuarioSenhaDTO) {
+
+		Assert.isTrue(!usuarioSenhaDTO.getSenhaAtual().equals(usuarioSenhaDTO.getNovaSenha()),
+				"As senhas não podem ser iguais");
+		Assert.hasText(usuarioSenhaDTO.getNovaSenha(), "A nova senha não pode ser vazia");
+		Assert.isTrue(usuarioSenhaDTO.getNovaSenha().length() >= 8, "A senha deve ter 8 ou mais caracteres");
+
+		Usuario usuario = usuarioRepository.findById(usuarioSenhaDTO.getId())
+				.orElseThrow(() -> new BusinessException("Usuário não encontrado"));
+
+		if (!passwordEncoder.matches(usuarioSenhaDTO.getSenhaAtual(), usuario.getSenha())) {
+			throw new BusinessException("Senha incorreta");
+		}
+
+		String senhaEncriptada = passwordEncoder.encode(usuarioSenhaDTO.getNovaSenha());
+		usuario.setSenha(senhaEncriptada);
+
+		usuarioRepository.save(usuario);
+
+		return true;
+	}
+
+	@Override
+	public String alterarFoto(String authorization, MultipartFile multipartFile) {
+		Assert.isTrue(multipartFile.getOriginalFilename().contains(".jpg")
+				|| multipartFile.getOriginalFilename().contains(".jpeg"), "Tipo de arquivo inválido");
+
+		UsuarioAutenticadoDTO obterDadosUsuario = tokenService.obterDadosUsuario(authorization);
+		String nomeUsuario = StringUtil.removerAcentos(obterDadosUsuario.getNome().replace(" ", "_").toLowerCase());
+		String usuarioDados = obterDadosUsuario.getId().toString().concat("_").concat(nomeUsuario);
+		String url = null;
+
+		Usuario usuario = usuarioRepository.findById(obterDadosUsuario.getId())
+				.orElseThrow(() -> new BusinessException("Usuário não encontrado"));
+
+		try {
+			if (usuario.getFoto() != null) {
+				amazonS3Service.deleteFile(usuario.getFoto(), "fotousuarios");
+			}
+
+			url = amazonS3Service.fileUpload("usuarios", usuarioDados, multipartFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (url != null) {
+			usuario.setFoto(url);
+			usuarioRepository.save(usuario);
+		}
+
+		return url;
 	}
 }
