@@ -24,8 +24,6 @@ public interface UsuarioService {
 
 	public abstract UsuarioDTO editarConta(EditarUsuarioDTO editarUsuarioDTO, Long codigoUsuario);
 
-	public abstract UsuarioDTO editarFoto(Long codigoUsuario);
-
 	public abstract UsuarioDTO editarPlano(Long codigoUsuario);
 
 	public abstract Long contarEnvios(Long id);
@@ -35,4 +33,6 @@ public interface UsuarioService {
 	public abstract Boolean alterarSenha(UsuarioSenhaDTO usuarioSenhaDTO);
 
 	public abstract String alterarFoto(String authorization, MultipartFile multipartFile);
+
+	public abstract Boolean editarUsuario(String authorization, UsuarioDTO usuarioDTO);
 }

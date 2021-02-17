@@ -88,4 +88,9 @@ public class UsuarioControllerImpl implements UsuarioController {
 
 		return usuarioService.alterarFoto(authorization, multipartFile);
 	}
+
+	@Override
+	public Boolean editar(@RequestHeader("Authorization") String authorization, @RequestBody UsuarioDTO usuarioDTO) {
+		return usuarioService.editarUsuario(authorization, usuarioDTO);
+	}
 }

@@ -53,4 +53,7 @@ public interface UsuarioController {
 
 	@PostMapping("/avatar")
 	public abstract String mudarFotoUsuario(String authorization, MultipartFile multipartFile);
+
+	@PutMapping("/perfil")
+	public abstract Boolean editar(String authorization, UsuarioDTO usuarioDTO);
 }

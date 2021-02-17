@@ -106,12 +106,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public UsuarioDTO editarFoto(Long codigoUsuario) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public UsuarioDTO editarPlano(Long codigoUsuario) {
 		// TODO Auto-generated method stub
 		return null;
@@ -193,5 +187,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 
 		return url;
+	}
+
+	@Override
+	public Boolean editarUsuario(String authorization, UsuarioDTO usuarioDTO) {
+		Assert.isTrue(usuarioDTO.getCidade() != null && usuarioDTO.getUf() != null, "Os dados não podem estar vazios");
+
+		UsuarioAutenticadoDTO dadosLogin = tokenService.obterDadosUsuario(authorization);
+
+		Usuario usuario = usuarioRepository.findById(dadosLogin.getId())
+				.orElseThrow(() -> new BusinessException("Usuário não encontrado"));
+
+		usuario.setCidade(usuarioDTO.getCidade());
+		usuario.setUf(usuarioDTO.getUf());
+
+		usuarioRepository.save(usuario);
+
+		return true;
 	}
 }
